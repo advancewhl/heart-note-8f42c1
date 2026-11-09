@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#170a13">
+<title>致 江曦霞</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;overflow:hidden;cursor:pointer;
+    background:#150911;
+    color:#fff6ef;user-select:none;-webkit-tap-highlight-color:transparent;
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,sans-serif;
+  }
+  /* ---------- atmosphere ---------- */
+  .bg{
+    position:fixed;inset:0;pointer-events:none;
+    background:
+      radial-gradient(88% 62% at 50% 34%, #5b2136 0%, #3a1526 34%, #22101c 62%, #100810 100%),
+      radial-gradient(52% 38% at 22% 78%, rgba(180,60,90,.16), transparent 70%),
+      radial-gradient(46% 34% at 82% 22%, rgba(220,120,120,.10), transparent 70%);
+  }
+  .vignette{
+    position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(72% 62% at 50% 46%, transparent 40%, rgba(6,2,6,.62) 100%);
+  }
+  .grain{
+    position:fixed;inset:-20%;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .heart-glow{
+    position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+    pointer-events:none;opacity:.85;
+    transition:opacity 1.8s ease,transform 1.8s cubic-bezier(.2,.8,.3,1);
+  }
+  body.scattered .heart-glow{opacity:.16;transform:translate(-50%,-50%) scale(1.7)}
+
+  .spark{
+    position:fixed;width:3px;height:3px;border-radius:50%;
+    background:#ffd9c9;pointer-events:none;
+    box-shadow:0 0 8px 2px rgba(255,190,170,.45);
+    animation:twinkle 6s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.05;transform:scale(.7)}50%{opacity:.65;transform:scale(1)}}
+
+  /* ---------- 3D stage ---------- */
+  .stage{position:fixed;inset:0;perspective:1250px;perspective-origin:50% 47%;z-index:1}
+  .scene{
+    position:absolute;left:50%;top:47%;width:0;height:0;
+    transform-style:preserve-3d;will-change:transform;
+  }
+
+  .card{
+    position:absolute;left:0;top:0;
+    width:var(--cw,108px);height:var(--ch,69px);
+    margin-left:calc(var(--cw,108px) / -2);margin-top:calc(var(--ch,69px) / -2);
+    transform-style:preserve-3d;will-change:transform,opacity,filter;
+    transition:transform 1.3s cubic-bezier(.16,.84,.28,1),opacity 1s ease,filter 1.2s ease;
+    pointer-events:none;
+  }
+  .card::before{
+    content:"";position:absolute;inset:0;border-radius:13px;transform:translateZ(-10px);
+    background:linear-gradient(158deg,#d9b4a3 0%,#bd8b7d 100%);
+    box-shadow:0 26px 44px -20px rgba(45,2,24,.85);
+  }
+  .card.accent::before{background:linear-gradient(158deg,#a8394f 0%,#7d2338 100%)}
+  .sheet{
+    width:100%;height:100%;border-radius:13px;
+    display:grid;place-items:center;text-align:center;
+    padding:9px 10px;
+    font-size:var(--fs,11.2px);line-height:1.45;letter-spacing:.02em;
+    color:#5c2f2b;position:relative;overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 18% 0%, rgba(255,255,255,.95), rgba(255,255,255,0) 58%),
+      linear-gradient(158deg,#fffdfa 0%,#fff6ee 52%,#ffe8dd 100%);
+    border:1px solid rgba(255,255,255,.62);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.95) inset,
+      0 0 0 1px rgba(255,214,200,.35) inset,
+      0 20px 42px -18px rgba(60,4,30,.75),
+      0 4px 12px rgba(60,4,30,.18);
+    animation:floatY 9s ease-in-out infinite;
+    animation-delay:var(--fd,0s);
+  }
+  @keyframes floatY{0%,100%{transform:translateY(-2px)}50%{transform:translateY(2.5px)}}
+  .sheet::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;
+    background:linear-gradient(120deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 42%);
+  }
+  .sheet::after{
+    content:"♥";position:absolute;right:8px;bottom:3px;
+    font-size:10px;color:rgba(226,92,116,.17);
+  }
+  .card.accent .sheet{
+    color:#fff5ee;
+    background:
+      radial-gradient(120% 90% at 20% 0%, rgba(255,255,255,.30), rgba(255,255,255,0) 60%),
+      linear-gradient(158deg,#e86b83 0%,#cf4a68 52%,#b53a58 100%);
+    border-color:rgba(255,255,255,.30);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.35) inset,
+      0 20px 42px -16px rgba(120,6,44,.85),
+      0 4px 12px rgba(60,4,30,.28);
+  }
+  .card.accent .sheet::after{color:rgba(255,255,255,.24)}
+
+  /* ---------- caption ---------- */
+  .caption{
+    position:fixed;left:0;right:0;bottom:max(26px,env(safe-area-inset-bottom));
+    text-align:center;pointer-events:none;z-index:3;
+  }
+  .caption h1{
+    margin:0 0 11px;font-size:16.5px;font-weight:400;letter-spacing:.3em;text-indent:.3em;
+    color:rgba(255,242,235,.82);
+    font-family:"Songti SC","Noto Serif SC","Source Han Serif SC",serif;
+    text-shadow:0 2px 18px rgba(0,0,0,.55);
+    transition:opacity 1.1s ease,transform 1.1s ease;
+  }
+  .caption .hint{
+    margin:0;font-size:11px;letter-spacing:.2em;text-indent:.2em;
+    color:rgba(255,224,212,.42);transition:opacity .9s ease;
+  }
+  body.scattered .caption h1{opacity:.34;transform:translateY(4px)}
+  body.touched .hint{opacity:0}
+
+  @media (prefers-reduced-motion:reduce){
+    .card{transition:transform .6s ease,opacity .6s ease}
+    .spark{animation:none;opacity:.25}
+  }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <svg class="heart-glow" viewBox="-52 -52 104 104" aria-hidden="true">
+    <defs>
+      <radialGradient id="hg" cx="50%" cy="50%" r="56%">
+        <stop offset="0%" stop-color="#ffd6cf" stop-opacity=".55"/>
+        <stop offset="42%" stop-color="#ff7f98" stop-opacity=".38"/>
+        <stop offset="100%" stop-color="#ff4f78" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="hb" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="3.6"/>
+      </filter>
+    </defs>
+    <path id="glowPath" d="" fill="url(#hg)" filter="url(#hb)" transform="translate(0,-9.3)"/>
+  </svg>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <div class="stage">
+    <div class="scene" id="scene"></div>
+  </div>
+
+  <div class="caption">
+    <h1>致 江曦霞</h1>
+    <p class="hint">有些话，想悄悄告诉你 · 轻触散开</p>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+
+  var PHRASES = [
+    "你已经很努力了","慢一点也没关系","今天也辛苦啦","记得好好吃饭",
+    "你比想象中更勇敢","难过就哭一会儿","你值得被温柔对待","别把所有事都自己扛",
+    "偶尔停下来也没事","你的好，有人记得","世界很大，先照顾好自己","不用每件事都做到最好",
+    "想休息就休息吧","你从来不是一个人","今天的你也很可爱","允许自己搞砸一次",
+    "累了就早点睡","你已经走了很远","别对自己那么严格","心情不好就来找我",
+    "你笑起来很好看","明天又是新的一天","你不需要向谁证明","慢慢来，来得及",
+    "抱抱你","有我在呢","你值得所有的好意","别急，花开有时",
+    "所有的难都会过去","记得给自己一点甜","你不必总是坚强","你很好，真的",
+    "我一直在","谢谢你的坚持","你已经足够好了","少熬夜，多喝水",
+    "难过时，慢一点也没事","你一笑，世界就亮了","你值得被认真对待","今天也要好好爱自己",
+    "别怕，路会越走越亮","你是被爱着的","偶尔发呆也很好","你的努力，终会被看见",
+    "记得抬头看看天","无论什么时候，我都在","你已经做得很好了","愿你被生活温柔以待",
+    "曦霞，愿你所遇皆温柔","曦霞，你已经足够好了","曦霞，记得要先爱自己","曦霞，你值得所有美好"
+  ];
+
+  // ---------- deterministic random ----------
+  function mulberry32(a){
+    return function(){
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  var rand = mulberry32(11223355);
+  function clamp(v,a,b){ return v < a ? a : (v > b ? b : v); }
+  var DEG = 180/Math.PI;
+
+  // ---------- classic heart curve, normalised ----------
+  var Y_STRETCH = 1.24;   // the raw curve is a bit wide; pull it taller
+  function heartPoint(t){
+    var x = 16*Math.pow(Math.sin(t),3);
+    var y = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+    return { x: x/17, y: y*Y_STRETCH/17 };
+  }
+  var H_W = 1.88, H_H = 2.11;      // actual extents of the stretched curve
+  var CY = 0.185;                   // curve centre sits above the origin
+
+  // arc-length table so cards sit evenly around the outline
+  var CURVE = (function(){
+    var pts = [], total = 0, prev = heartPoint(0);
+    pts.push({t:0, x:prev.x, y:prev.y, s:0});
+    for(var i = 1; i <= 720; i++){
+      var t = i/720*Math.PI*2, p = heartPoint(t);
+      total += Math.hypot(p.x-prev.x, p.y-prev.y);
+      pts.push({t:t, x:p.x, y:p.y, s:total});
+      prev = p;
+    }
+    return {pts:pts, total:total};
+  })();
+  function atArc(dist){
+    var pts = CURVE.pts, lo = 0, hi = pts.length-1;
+    while(lo < hi){ var mid = (lo+hi) >> 1; if(pts[mid].s < dist) lo = mid+1; else hi = mid; }
+    var p = pts[lo];
+    var a = heartPoint(p.t - 0.012), b = heartPoint(p.t + 0.012);
+    var ang = Math.atan2(-(b.y-a.y), (b.x-a.x));   // screen-space tangent
+    return {x:p.x, y:p.y, ang:ang};
+  }
+
+  // ---------- glow path = the very same heart ----------
+  (function(){
+    var d = [], n = 160;
+    for(var i = 0; i <= n; i++){
+      var p = heartPoint(i/n*Math.PI*2);
+      d.push((i ? " L" : "M") + (p.x*50).toFixed(2) + " " + (-p.y*50).toFixed(2));
+    }
+    document.getElementById("glowPath").setAttribute("d", d.join("") + " Z");
+  })();
+
+  // ---------- metrics ----------
+  var scene = document.getElementById("scene");
+  var vw = 0, vh = 0, S = 300, CARD_W = 108, CARD_H = 69, RZ = 420, small = false;
+
+  function metrics(){
+    vw = window.innerWidth; vh = window.innerHeight;
+    small = Math.min(vw, vh) < 620;
+    var fitW = Math.min(vw - (small ? 74 : 96), (vh*0.74 - (small ? 42 : 56))*(H_W/H_H));
+    S = fitW / H_W;
+    CARD_W = small ? 62 : 84;
+    CARD_H = small ? 42 : 56;
+    RZ = Math.min(vw, vh)*0.52;
+    scene.style.setProperty("--cw", CARD_W + "px");
+    scene.style.setProperty("--ch", CARD_H + "px");
+    scene.style.setProperty("--fs", (small ? 8.2 : 10) + "px");
+    document.querySelector(".heart-glow").style.width = (S*2.05).toFixed(0) + "px";
+  }
+
+  // ---------- build cards: concentric heart rings + a few in the middle ----------
+  metrics();
+  var RINGS = small
+    ? [{k:1.00, n:15, z: 0.02}, {k:0.74, n:6, z:-0.14}]
+    : [{k:1.00, n:28, z: 0.02}, {k:0.74, n:10, z:-0.14}];
+  var CENTER = small ? 2 : 6;
+
+  var cards = [];
+  var frag = document.createDocumentFragment();
+  var pi = 0, order = [];
+
+  RINGS.forEach(function(ring){
+    for(var i = 0; i < ring.n; i++){
+      var p = atArc((i + 0.5)/ring.n * CURVE.total);
+      order.push({
+        x: p.x*ring.k, y: (p.y + CY)*ring.k,
+        rz: clamp(p.ang*DEG*0.38, -22, 22),
+        k: ring.k,
+        z: ring.z
+      });
+    }
+  });
+  for(var c0 = 0; c0 < CENTER; c0++){
+    var a = rand()*Math.PI*2, r = 0.10 + rand()*0.26;
+    order.push({
+      x: Math.cos(a)*r*0.9,
+      y: Math.sin(a)*r*0.6 - 0.02,
+      rz: (rand()-.5)*20,
+      k: 0.5,
+      z: 0.10 + rand()*0.22
+    });
+  }
+
+  order.forEach(function(o, idx){
+    var el = document.createElement("div");
+    el.className = "card" + (idx % 8 === 3 ? " accent" : "");
+    var sheet = document.createElement("div");
+    sheet.className = "sheet";
+    sheet.style.setProperty("--fd", (-rand()*9).toFixed(2) + "s");
+    sheet.textContent = PHRASES[pi++ % PHRASES.length];
+    el.appendChild(sheet);
+    frag.appendChild(el);
+
+    cards.push({
+      el: el,
+      ux: o.x, uy: o.y,
+      hz: o.z + (rand()-.5)*0.04,
+      hrx: o.y*12,
+      hry: -o.x*14,
+      hrz: o.rz + (rand()-.5)*6,
+      sx:0, sy:0, sz:0, srx:0, sry:0, srz:0, depth:0,
+      jrx:(rand()-.5)*16, jry:(rand()-.5)*16, jrz:(rand()-.5)*26,
+      hx:0, hy:0, hzp:0,
+      dIn: clamp(1 - o.k, 0, 1)
+    });
+  });
+  scene.appendChild(frag);
+
+  // ---------- geometry (px) ----------
+  function geometry(){
+    var RX = Math.max(vw*0.40, 215);
+    var RY = Math.max(vh*0.36, 200);
+    var GA = Math.PI*(3 - Math.sqrt(5));
+    var n = cards.length;
+
+    for(var i = 0; i < n; i++){
+      var c = cards[i];
+
+      c.hx = c.ux*S;
+      c.hy = -c.uy*S;
+      c.hzp = c.hz*S;
+
+      // scattered: a shell around the viewer, never a heart
+      var phi = Math.acos(clamp(1 - 2*(i+0.5)/n, -1, 1));
+      var theta = GA*i + 0.7;
+      var sp = Math.sin(phi);
+      var wob = 0.86 + 0.20*((i*37 % 11)/10);
+      c.sx = sp*Math.cos(theta)*RX*wob;
+      c.sy = -Math.cos(phi)*RY*wob;
+      c.sz = sp*Math.sin(theta)*RZ*wob;
+
+      c.sry = clamp(Math.atan2(c.sx, 1900)*DEG*0.55, -13, 13) + c.jry*0.4;
+      c.srx = clamp(-Math.atan2(c.sy, 1900)*DEG*0.55, -11, 11) + c.jrx*0.4;
+      c.srz = c.jrz*1.5;
+
+      c.depth = clamp((c.sz + RZ)/(2*RZ), 0, 1);
+    }
+  }
+
+  // ---------- transforms ----------
+  function heartT(c){
+    return "translate3d(" + c.hx.toFixed(1) + "px," + c.hy.toFixed(1) + "px," + c.hzp.toFixed(1) + "px) " +
+           "rotateX(" + c.hrx.toFixed(1) + "deg) rotateY(" + c.hry.toFixed(1) + "deg) rotateZ(" + c.hrz.toFixed(1) + "deg)";
+  }
+  function scatterT(c){
+    return "translate3d(" + c.sx.toFixed(1) + "px," + c.sy.toFixed(1) + "px," + c.sz.toFixed(1) + "px) " +
+           "rotateX(" + c.srx.toFixed(1) + "deg) rotateY(" + c.sry.toFixed(1) + "deg) rotateZ(" + c.srz.toFixed(1) + "deg)";
+  }
+  function farT(c){
+    return "translate3d(" + (c.sx*1.25).toFixed(1) + "px," + (c.sy*1.25).toFixed(1) + "px," + (c.sz-1150).toFixed(1) + "px) " +
+           "rotateX(" + c.srx.toFixed(1) + "deg) rotateY(" + c.sry.toFixed(1) + "deg)";
+  }
+  function depthStyle(c){
+    var b = 0.66 + 0.48*c.depth;
+    var o = 0.58 + 0.42*c.depth;
+    var blur = c.depth < 0.34 ? (0.34 - c.depth)*4.6 : 0;
+    return "brightness(" + b.toFixed(2) + ") blur(" + blur.toFixed(2) + "px)";
+  }
+
+  var state = "far", auto = true, timer = null;
+
+  function apply(next, instant){
+    state = next;
+    document.body.classList.toggle("scattered", next === "scatter");
+    for(var i = 0; i < cards.length; i++){
+      var c = cards[i], el = c.el;
+      el.style.transition = instant ? "none" : "";
+      if(next === "heart"){
+        el.style.opacity = "1";
+        el.style.filter = "none";
+        el.style.transitionDelay = instant ? "0s" : (c.dIn*0.5).toFixed(3) + "s";
+        el.style.transform = heartT(c);
+      }else if(next === "scatter"){
+        el.style.transitionDelay = instant ? "0s" : ((1 - c.depth)*0.36).toFixed(3) + "s";
+        el.style.transform = scatterT(c);
+        el.style.filter = depthStyle(c);
+        el.style.opacity = (0.58 + 0.42*c.depth).toFixed(2);
+      }else{
+        el.style.opacity = "0";
+        el.style.filter = "none";
+        el.style.transitionDelay = instant ? "0s" : (0.010*i).toFixed(3) + "s";
+        el.style.transform = farT(c);
+      }
+    }
+  }
+
+  function relayout(){
+    metrics();
+    geometry();
+    apply(state, true);
+    requestAnimationFrame(function(){
+      for(var i = 0; i < cards.length; i++) cards[i].el.style.transition = "";
+    });
+  }
+
+  metrics();
+  geometry();
+  window.addEventListener("resize", relayout);
+  window.addEventListener("orientationchange", function(){ setTimeout(relayout, 300); });
+
+  // ---------- sparkles ----------
+  (function(){
+    for(var i = 0; i < 16; i++){
+      var s = document.createElement("div");
+      s.className = "spark";
+      s.style.left = (6 + rand()*88) + "%";
+      s.style.top = (8 + rand()*76) + "%";
+      s.style.animationDelay = (-rand()*6).toFixed(2) + "s";
+      s.style.animationDuration = (4.5 + rand()*4).toFixed(2) + "s";
+      document.body.appendChild(s);
+    }
+  })();
+
+  // ---------- camera ----------
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var px = 0, py = 0, tx = 0, ty = 0;
+  var dragX = 0, dragging = false, moved = 0, lastX = 0, lastY = 0;
+
+  window.addEventListener("pointermove", function(e){
+    if(e.pointerType === "touch" && !dragging) return;
+    tx = (e.clientX/vw - 0.5)*9;
+    ty = -(e.clientY/vh - 0.5)*7;
+    if(dragging){
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      moved += Math.abs(dx) + Math.abs(dy);
+      dragX = clamp(dragX + dx*0.16, -70, 70);
+      lastX = e.clientX; lastY = e.clientY;
+    }
+  }, {passive:true});
+  window.addEventListener("pointerdown", function(e){ dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY; }, {passive:true});
+  window.addEventListener("pointerup", function(){ dragging = false; }, {passive:true});
+  window.addEventListener("pointercancel", function(){ dragging = false; }, {passive:true});
+
+  var camY = 0, camX = 0;
+  function frame(ts){
+    var t = ts/1000;
+    var orbit = reduce ? 0 : (state === "scatter" ? Math.sin(t*0.28)*16 : Math.sin(t*0.22)*3);
+    var tilt  = reduce ? 0 : (state === "scatter" ? -5 + Math.sin(t*0.23)*3.5 : 0);
+    camY += ((orbit + dragX + tx) - camY)*0.055;
+    camX += ((tilt + ty) - camX)*0.055;
+    scene.style.transform = "rotateX(" + camX.toFixed(2) + "deg) rotateY(" + camY.toFixed(2) + "deg)";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---------- interaction ----------
+  function toggle(){ apply(state === "heart" ? "scatter" : "heart"); }
+  function stopAuto(){ auto = false; if(timer){ clearTimeout(timer); timer = null; } }
+  function loop(){
+    if(!auto) return;
+    timer = setTimeout(function(){
+      if(!auto) return;
+      toggle(); loop();
+    }, state === "heart" ? 7000 : 6200);
+  }
+
+  window.addEventListener("click", function(){
+    if(moved > 8) return;
+    stopAuto();
+    document.body.classList.add("touched");
+    toggle();
+  });
+  window.addEventListener("keydown", function(e){
+    if(e.code === "Space" || e.key === " "){
+      e.preventDefault(); stopAuto();
+      document.body.classList.add("touched");
+      toggle();
+    }
+  });
+
+  // ---------- entrance ----------
+  var preset = (location.hash || "").replace("#", "");
+  apply("far");
+  window.setTimeout(function(){
+    apply(preset === "scatter" ? "scatter" : "heart");
+    if(!reduce && preset !== "heart" && preset !== "scatter") loop();
+  }, 130);
+})();
+</script>
+</body>
+</html>
